@@ -1,7 +1,6 @@
 services:
   qbt-control:
-    build: .
-    image: qbt-control:local
+    image: ${QBT_CONTROL_IMAGE:-ghcr.io/akuto212/qbit-control:latest}
     restart: unless-stopped
     init: true
     environment:
