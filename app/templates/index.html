@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101511">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="qbt control">
+  <meta name="description" content="A simple speed-limit control for your qBittorrent.">
+  <title>qBittorrent · Speed control</title>
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="qbt control home">
+        <img src="/static/icon.svg" width="32" height="32" alt="">
+        <span>qbt<span class="brand-light"> / control</span></span>
+      </a>
+      <span class="eyebrow">SPEED CONTROL</span>
+    </header>
+
+    <section class="panel" aria-labelledby="title">
+      <div class="panel-heading">
+        <div><p class="eyebrow">YOUR CONNECTION, YOUR PACE</p><h1 id="title">qBittorrent</h1></div>
+        <span class="connection" id="connection">Connecting</span>
+      </div>
+
+      <div class="speeds" aria-label="Current transfer speeds">
+        <div class="speed">
+          <div class="metric-label"><span class="arrow" aria-hidden="true">↓</span> Download speed</div>
+          <p class="metric" id="download">—<span class="unit"> MiB/s</span></p>
+        </div>
+        <div class="speed">
+          <div class="metric-label"><span class="arrow upload-arrow" aria-hidden="true">↑</span> Upload speed</div>
+          <p class="metric" id="upload">—<span class="unit"> MiB/s</span></p>
+        </div>
+      </div>
+
+      <div class="control" id="control" data-state="loading">
+        <div class="mode-row">
+          <div><p class="eyebrow">ALTERNATIVE SPEED LIMITS</p><p class="mode" role="status"><span class="dot" aria-hidden="true"></span><span id="mode">Connecting…</span></p></div>
+          <span class="mode-icon" aria-hidden="true">↯</span>
+        </div>
+        <p class="explanation" id="explanation">Getting the latest connection status.</p>
+        <div class="limits" id="limits" hidden>
+          <span>Configured limits</span>
+          <span class="limit-values"><span id="download-limit"></span><span id="upload-limit"></span></span>
+        </div>
+        <button id="limit-button" type="button" disabled><span id="button-label">Connecting…</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+        <p id="notice" class="notice" role="alert" hidden></p>
+      </div>
+
+      <footer class="panel-footer"><span><span class="pulse-dot" aria-hidden="true"></span><span id="update-status">Waiting for status</span></span><span>Refreshes every 3s</span></footer>
+    </section>
+    <p class="footnote">A little less bandwidth. A little more room.</p>
+    <noscript><p class="notice">Enable JavaScript to view speeds and control alternative limits.</p></noscript>
+  </main>
+</body>
+</html>

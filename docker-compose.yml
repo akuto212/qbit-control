@@ -1,0 +1,43 @@
+services:
+  qbt-control:
+    build: .
+    image: qbt-control:local
+    restart: unless-stopped
+    init: true
+    environment:
+      QBIT_URL: ${QBIT_URL:-http://qbittorrent:8080}
+      QBIT_API_KEY: ${QBIT_API_KEY:?Set QBIT_API_KEY in .env}
+      APP_ORIGIN: https://${QBT_CONTROL_HOST:?Set QBT_CONTROL_HOST in .env}
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777,noexec,nosuid
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - qbit
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${TRAEFIK_NETWORK:?Set TRAEFIK_NETWORK in .env}
+      traefik.http.routers.qbt-control.rule: Host(`${QBT_CONTROL_HOST}`)
+      traefik.http.routers.qbt-control.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
+      traefik.http.routers.qbt-control.tls: "true"
+      traefik.http.routers.qbt-control.tls.certresolver: ${TRAEFIK_CERTRESOLVER:?Set the existing TLS resolver}
+      traefik.http.routers.qbt-control.middlewares: ${TRAEFIK_MIDDLEWARES:?Set the existing TinyAuth middleware chain}
+      traefik.http.routers.qbt-control.service: qbt-control
+      traefik.http.services.qbt-control.loadbalancer.server.port: "8000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+networks:
+  proxy:
+    external: true
+    name: ${TRAEFIK_NETWORK:?Set TRAEFIK_NETWORK in .env}
+  qbit:
+    external: true
+    name: ${QBIT_NETWORK:?Set QBIT_NETWORK in .env}
